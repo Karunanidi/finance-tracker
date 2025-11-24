@@ -33,7 +33,7 @@ final class AnalyticsDataProvider
   AnalyticsData create() => AnalyticsData();
 }
 
-String _$analyticsDataHash() => r'70c4a0744700b110fbe7d677fdc49a6b5952f379';
+String _$analyticsDataHash() => r'38b2c338d77c46bb38d6916395d5fb2855f68291';
 
 abstract class _$AnalyticsData extends $AsyncNotifier<AnalyticsStats> {
   FutureOr<AnalyticsStats> build();

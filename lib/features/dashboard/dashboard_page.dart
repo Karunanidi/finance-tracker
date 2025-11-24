@@ -4,7 +4,9 @@ import 'package:finance_tracker/core/models/currency.dart';
 
 import 'package:finance_tracker/features/dashboard/cubit/dashboard_cubit.dart';
 import 'package:finance_tracker/features/dashboard/cubit/dashboard_state.dart';
+import 'package:finance_tracker/features/dashboard/recommendation_provider.dart';
 
+import 'package:finance_tracker/widgets/recommendation_card.dart';
 import 'package:finance_tracker/widgets/transaction_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -163,6 +165,35 @@ class _DashboardView extends StatelessWidget {
                 ),
               ],
             ),
+          ),
+          const SizedBox(height: 24),
+
+          // AI Recommendation Card
+          Consumer(
+            builder: (context, ref, child) {
+              final recommendationState = ref.watch(recommendationDataProvider);
+
+              return recommendationState.when(
+                data: (recommendation) => RecommendationCard(
+                  recommendation: recommendation,
+                  onRefresh: () {
+                    ref.read(recommendationDataProvider.notifier).refresh();
+                  },
+                  // We don't have lastUpdated exposed in the state yet,
+                  // but the provider handles caching internally.
+                  // For now, we can omit it or update the provider to return a wrapper object.
+                ),
+                loading: () => Container(
+                  height: 180,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  child: const Center(child: CircularProgressIndicator()),
+                ),
+                error: (_, __) => const SizedBox.shrink(),
+              );
+            },
           ),
           const SizedBox(height: 24),
 
